@@ -23,8 +23,8 @@ function Recipe() {
           <h2 className="page-title">{data.title}</h2>
           <p>Meal Time: {data.cookingTime}</p>
           <ul>
-            {data.ingredients.map((ing, idx) => (
-              <li key={idx}> {ing}</li>
+            {data.ingredients.map((ing) => (
+              <li key={ing}> {ing}</li>
             ))}
           </ul>
           <p className="method">{data.method}</p>
