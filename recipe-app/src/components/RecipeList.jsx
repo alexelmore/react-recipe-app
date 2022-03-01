@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import "./RecipeList.css";
 
 function RecipeList({ recipes }) {
-  console.log(recipes);
   return (
     <div className="recipe-list">
       {recipes.map((recipe) => (
