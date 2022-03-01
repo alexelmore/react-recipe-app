@@ -14,25 +14,40 @@ function Create() {
   // Setup useRef Hook for ingredient input
   const ingredientInput = useRef(null);
 
+  // Pull out postData method from useFetch Hook
+  const { postData, data, error } = useFetch(
+    "http://localhost:3000/recipes",
+    "POST"
+  );
+
   // Function that handles form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(recipeTitle, cookingMethod, cookingTime, ingredients);
+    postData({
+      title: recipeTitle,
+      ingredients,
+      method: cookingMethod,
+      cookingTime: cookingTime + " minutes",
+    });
   };
 
   // Function that handles adding a single ingredient
   const handleAddIngredient = (e) => {
     e.preventDefault();
+
     // Init and trim ingredient variable
     const ing = newIngredient.trim();
+
     // Check if ingredient exists and is not already part of the ingredients array
     if (ing && !ingredients.includes(ing)) {
       // Add new ingredient to the ingredients array
       setIngredients((prevState) => {
         return [...prevState, newIngredient];
       });
+
       // Clear out ingredient text field
       setNewIngredient("");
+
       // use the useRef constant created earlier, to focus the ingredient input field
       ingredientInput.current.focus();
     }

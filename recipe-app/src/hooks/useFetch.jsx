@@ -1,21 +1,36 @@
 import { useState, useEffect } from "react";
 
-export const useFetch = (url) => {
+export const useFetch = (url, method = "GET") => {
   // Component Level State
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
+  const [options, setOptions] = useState(null);
+
+  // Funtion that sets the ground to make an HTTP POST Request
+  const postData = (postData) => {
+    setOptions({
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(postData),
+    });
+  };
 
   // useEffect Hook the fetches on page load
   useEffect(() => {
     //Controller const to abort requests when needed.
     const controller = new AbortController();
     // Function that fetches the data
-    const fetchData = async () => {
+    const fetchData = async (fetchOptions) => {
       // Reset pending state to true
       setIsPending(true);
       try {
-        const res = await fetch(url, { signal: controller.signal });
+        const res = await fetch(url, {
+          ...fetchOptions,
+          signal: controller.signal,
+        });
         if (!res.ok) {
           // If response ok property not ok, throw an error
           throw new Error(res.statusText);
@@ -39,15 +54,23 @@ export const useFetch = (url) => {
         }
       }
     };
-    // Envoke function to fetch the data
-    fetchData();
+    // Check if method is GET. If so, call the fetchData function to make a GET request
+    if (method === "GET") {
+      // Envoke function to fetch the data
+      fetchData();
+    }
+    // Check if method is POST. If so, check if we have the options for the POST request. If so, make pass the options in as an argument and make a POST request
+    if (method === "POST" && options) {
+      // Envoke function to fetch the data
+      fetchData(options);
+    }
 
     // Clean up function that aborts requests after completed to avoid memory leaks
     return () => {
       controller.abort();
     };
-  }, [url]);
+  }, [url, options, method]);
 
   // Return data, isPending and error
-  return { data, isPending, error };
+  return { data, isPending, error, postData };
 };
