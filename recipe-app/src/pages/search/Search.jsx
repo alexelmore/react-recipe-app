@@ -20,13 +20,12 @@ function Search() {
   // Setup for sending a fetch request for search term
   const { data, isPending, error } = useFetch(url);
 
-  // Send request
   return (
     <div>
       <h2 className="page-title">Recipes including "{query}"</h2>
       {error && <p className="page-title">{error}</p>}
       {isPending && <p className="loading">Loading...</p>}
-      {data && <RecipeList recipes={data} />}
+      {data && <RecipeList term={query} recipes={data} />}
     </div>
   );
 }

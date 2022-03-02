@@ -1,8 +1,24 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { useEffect } from "react";
 // styles
 import "./RecipeList.css";
 
-function RecipeList({ recipes }) {
+function RecipeList({ recipes, term }) {
+  // Init history constant for useHistory Hook
+  const history = useHistory();
+
+  // useEffect Hook to redirect user back to the Home page if there are not recipes for the given search term
+  useEffect(() => {
+    if (recipes.length === 0) {
+      setTimeout(() => {
+        history.push("/");
+      }, 4500);
+    }
+  }, [recipes.length, history]);
+
+  if (recipes.length === 0) {
+    return <div className="error">No recipes for {term}</div>;
+  }
   return (
     <div className="recipe-list">
       {recipes.map((recipe) => (

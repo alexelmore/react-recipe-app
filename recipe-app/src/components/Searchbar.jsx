@@ -14,6 +14,8 @@ function Searchbar() {
     e.preventDefault();
     // Redirect the user to the Search page, with query param
     history.push(`/search?q=${term}`);
+    // Reset term to default state
+    setTerm("");
   };
   return (
     <div className="searchbar">
