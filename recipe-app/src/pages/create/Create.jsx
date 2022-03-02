@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useFetch } from "../../hooks/useFetch";
+import { useHistory } from "react-router-dom";
 // Styles
 import "./Create.css";
 
@@ -13,6 +14,8 @@ function Create() {
 
   // Setup useRef Hook for ingredient input
   const ingredientInput = useRef(null);
+  // Reference to useHitory Hook to use later to redirect the user back to the Home page
+  const history = useHistory();
 
   // Pull out postData method from useFetch Hook
   const { postData, data, error } = useFetch(
@@ -52,6 +55,14 @@ function Create() {
       ingredientInput.current.focus();
     }
   };
+
+  // useEffect Hook used to redirect user to back to the Home page after the recipe has been created
+  useEffect(() => {
+    // Check if data is returned back, if so, redirect user to the back to the Home page using the our reference to the useHistory Hook.
+    if (data) {
+      history.push("/");
+    }
+  }, [data, history]);
   return (
     <div className="create">
       <h2 className="page-title">Add A New Recipe</h2>
