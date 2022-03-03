@@ -1,13 +1,31 @@
-import { createContext } from "react";
+import { createContext, useReducer } from "react";
 
 // Init and export a const containing our context for ThemeContext
 export const ThemeContext = createContext();
 
-// Export a function, which returns a JSX template, which is wrapped inside our ThemeContext.Provider property. This function will take in a prop and pull out the children property of the prop using object destructuring. The ThemeContext.Provider component, wrapping the children prop, will also have a value property, containing a color property.
+// Reducer function that takes in a state argument as its first argument, which represents the initial state, and an action argument as its second argument, which represents the type of change to apply to the state
+const themeReducer = (state, action) => {
+  switch (action.type) {
+    case "CHANGE_COLOR":
+      return { ...state, color: action.payload };
+    default:
+      return state;
+  }
+};
 
+// Export a function, which returns a JSX template, which is wrapped inside our ThemeContext.Provider property. This function will take in a prop and pull out the children property of the prop using object destructuring. The ThemeContext.Provider component, wrapping the children prop, will also have a value property, containing a color property.
 export function ThemeProvider({ children }) {
+  // Init useReducer Hook, passing it our themeReducer function as it
+  const [state, dispatch] = useReducer(themeReducer, {
+    color: "blue",
+  });
+  // Function that takes in a color argument and then calls the dispatch argument, passing it an object with a type propety, telling our reducer function what type of change to apply to our current state, and also a payload property, which represent the change to apply to said state
+  const changeColor = (color) => {
+    dispatch({ type: "CHANGE_COLOR", payload: color });
+  };
+
   return (
-    <ThemeContext.Provider value={{ color: "purple" }}>
+    <ThemeContext.Provider value={{ ...state, changeColor }}>
       {children}
     </ThemeContext.Provider>
   );

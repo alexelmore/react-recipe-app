@@ -6,10 +6,10 @@ import "./Navbar.css";
 
 function Navbar() {
   // Init a constant for our useTheme Hook and then pull out the color value property using object destructuring
-  const { color } = useTheme();
+  const { color, changeColor } = useTheme();
   return (
     <div className="navbar" style={{ background: color }}>
-      <nav>
+      <nav onClick={() => changeColor("gray")}>
         <Link className="brand" to="/">
           React Recipes App
         </Link>
