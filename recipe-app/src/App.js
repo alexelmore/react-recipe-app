@@ -8,12 +8,16 @@ import Search from "./pages/search/Search.jsx";
 import Navbar from "./components/Navbar";
 // ThemeSelector Component
 import ThemeSelector from "./components/ThemeSelector";
+// useTheme hook
+import { useTheme } from "./hooks/useTheme";
 // Styles
 import "./App.css";
 
 function App() {
+  // Pull out mode property from our useTheme hook using object destructuring
+  const { mode } = useTheme();
   return (
-    <div className="App">
+    <div className={`App ${mode}`}>
       <BrowserRouter>
         <Navbar />
         <ThemeSelector />
