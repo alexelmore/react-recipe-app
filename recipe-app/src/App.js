@@ -6,6 +6,8 @@ import Recipe from "./pages/recipe/Recipe";
 import Search from "./pages/search/Search.jsx";
 // Navbar Component
 import Navbar from "./components/Navbar";
+// ThemeSelector Component
+import ThemeSelector from "./components/ThemeSelector";
 // Styles
 import "./App.css";
 
@@ -14,6 +16,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Navbar />
+        <ThemeSelector />
         <Switch>
           <Route exact path="/">
             <Home />
